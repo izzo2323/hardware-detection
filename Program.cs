@@ -22,6 +22,20 @@ namespace HardwareDetector
 
             try
             {
+                // Detect operating system information
+                Console.WriteLine("\nOperating System:");
+                Console.WriteLine("----------------------------------------");
+                DetectOperatingSystemInfo();
+
+                // Detect motherboard and BIOS information
+                Console.WriteLine("\nMotherboard:");
+                Console.WriteLine("----------------------------------------");
+                DetectMotherboardInfo();
+
+                Console.WriteLine("\nBIOS:");
+                Console.WriteLine("----------------------------------------");
+                DetectBIOSInfo();
+
                 // Detect USB devices
                 DetectUSBDevices();
 
@@ -44,6 +58,16 @@ namespace HardwareDetector
                 Console.WriteLine("\nGraphics Adapters:");
                 Console.WriteLine("----------------------------------------");
                 DetectGraphicsAdapters();
+
+                // Detect network adapters
+                Console.WriteLine("\nNetwork Adapters:");
+                Console.WriteLine("----------------------------------------");
+                DetectNetworkAdapters();
+
+                // Detect monitors
+                Console.WriteLine("\nMonitors:");
+                Console.WriteLine("----------------------------------------");
+                DetectMonitors();
 
                 Console.WriteLine("\nPress any key to exit...");
                 Console.ReadKey();
@@ -249,6 +273,134 @@ namespace HardwareDetector
             catch (Exception ex)
             {
                 Console.WriteLine($"Error detecting graphics adapters: {ex.Message}");
+            }
+        }
+
+        static void DetectOperatingSystemInfo()
+        {
+            try
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(
+                    "SELECT * FROM Win32_OperatingSystem");
+
+                foreach (ManagementObject os in searcher.Get())
+                {
+                    string caption = GetProperty(os, "Caption");
+                    string version = GetProperty(os, "Version");
+                    string architecture = GetProperty(os, "OSArchitecture");
+                    string installDate = GetProperty(os, "InstallDate");
+
+                    Console.WriteLine($"Name: {caption}");
+                    Console.WriteLine($"Version: {version}");
+                    Console.WriteLine($"Architecture: {architecture}");
+                    Console.WriteLine($"Install Date: {installDate}");
+                    Console.WriteLine("----------------------------------------");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error detecting operating system info: {ex.Message}");
+            }
+        }
+
+        static void DetectMotherboardInfo()
+        {
+            try
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(
+                    "SELECT * FROM Win32_BaseBoard");
+
+                foreach (ManagementObject board in searcher.Get())
+                {
+                    string manufacturer = GetProperty(board, "Manufacturer");
+                    string product = GetProperty(board, "Product");
+                    string serialNumber = GetProperty(board, "SerialNumber");
+
+                    Console.WriteLine($"Manufacturer: {manufacturer}");
+                    Console.WriteLine($"Model: {product}");
+                    Console.WriteLine($"Serial Number: {serialNumber}");
+                    Console.WriteLine("----------------------------------------");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error detecting motherboard info: {ex.Message}");
+            }
+        }
+
+        static void DetectBIOSInfo()
+        {
+            try
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(
+                    "SELECT * FROM Win32_BIOS");
+
+                foreach (ManagementObject bios in searcher.Get())
+                {
+                    string manufacturer = GetProperty(bios, "Manufacturer");
+                    string version = GetProperty(bios, "SMBIOSBIOSVersion");
+                    string releaseDate = GetProperty(bios, "ReleaseDate");
+
+                    Console.WriteLine($"Manufacturer: {manufacturer}");
+                    Console.WriteLine($"Version: {version}");
+                    Console.WriteLine($"Release Date: {releaseDate}");
+                    Console.WriteLine("----------------------------------------");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error detecting BIOS info: {ex.Message}");
+            }
+        }
+
+        static void DetectNetworkAdapters()
+        {
+            try
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(
+                    "SELECT * FROM Win32_NetworkAdapter WHERE PhysicalAdapter = True");
+
+                foreach (ManagementObject adapter in searcher.Get())
+                {
+                    string name = GetProperty(adapter, "Name");
+                    string macAddress = GetProperty(adapter, "MACAddress");
+                    string adapterType = GetProperty(adapter, "AdapterType");
+                    string netEnabled = GetProperty(adapter, "NetEnabled");
+
+                    Console.WriteLine($"Name: {name}");
+                    Console.WriteLine($"MAC Address: {macAddress}");
+                    Console.WriteLine($"Adapter Type: {adapterType}");
+                    Console.WriteLine($"Connected: {netEnabled}");
+                    Console.WriteLine("----------------------------------------");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error detecting network adapters: {ex.Message}");
+            }
+        }
+
+        static void DetectMonitors()
+        {
+            try
+            {
+                ManagementObjectSearcher searcher = new ManagementObjectSearcher(
+                    "SELECT * FROM Win32_DesktopMonitor");
+
+                foreach (ManagementObject monitor in searcher.Get())
+                {
+                    string name = GetProperty(monitor, "Name");
+                    string screenWidth = GetProperty(monitor, "ScreenWidth");
+                    string screenHeight = GetProperty(monitor, "ScreenHeight");
+
+                    Console.WriteLine($"Name: {name}");
+                    Console.WriteLine($"Resolution: {screenWidth} x {screenHeight}");
+                    Console.WriteLine("----------------------------------------");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error detecting monitors: {ex.Message}");
             }
         }
 

@@ -4,11 +4,16 @@ A C# console application that detects and displays hardware information on Windo
 
 ## Features
 
+- Operating system information (name, version, architecture, install date)
+- Motherboard information (manufacturer, model, serial number)
+- BIOS information (manufacturer, version, release date)
 - Detection of USB devices and controllers
 - CPU information (name, manufacturer, cores, threads, clock speed)
 - RAM information (total memory, memory modules)
 - Disk drive information (model, manufacturer, size)
 - Graphics adapter information (adapter RAM, driver version, video mode)
+- Network adapter information (name, MAC address, adapter type, connection status)
+- Monitor information (name, resolution)
 
 ## Requirements
 
