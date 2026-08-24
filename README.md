@@ -1,6 +1,6 @@
 # Hardware Detector
 
-A C# console application that detects and displays hardware information on Windows systems using WMI (Windows Management Instrumentation).
+A C# application that detects and displays hardware information on Windows systems using WMI (Windows Management Instrumentation). It can run either as a one-shot console report or as a local web console.
 
 ## Features
 
@@ -22,11 +22,23 @@ A C# console application that detects and displays hardware information on Windo
 
 ## Usage
 
-Run the application on a Windows machine to display hardware information:
+### Console report
+
+Run on a Windows machine to print a one-shot hardware report:
 
 ```bash
 dotnet run
 ```
+
+### Web console
+
+Start a local web server with a live dashboard instead:
+
+```bash
+dotnet run -- --web
+```
+
+Then open http://localhost:8090/ in a browser. The dashboard fetches its data from a JSON API at `/api/hardware`, which is regenerated on every request (each page load or click of Refresh re-queries WMI). Use `--port=<number>` to run on a different port, e.g. `dotnet run -- --web --port=9000`.
 
 ## Important Note
 
